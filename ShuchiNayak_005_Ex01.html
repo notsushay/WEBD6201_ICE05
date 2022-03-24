@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<!-- Fig. 16.5: SwitchContent.html -->
+<!-- Asynchronously display content without reloading the page. -->
+<html>
+<head>
+   <meta charset = "utf-8">
+   <style type = "text/css">
+      .box { border: 1px solid black; padding: 10px }
+   </style>
+   <title>ICE 05 - Switch Content </title>
+   <script>
+      var asyncRequest; // variable to hold XMLHttpRequest object
+
+      // set up event handlers
+      function registerListeners()
+      {
+         var img;
+         img = document.getElementById( "phoenixS" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/PSuns.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "newyorkK" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/NYKnicks.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "losangL" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/LALakers.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "chicagoB" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/CBulls.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "brooklynN" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/BNets.html" ); }, false );
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "bostonC" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "./infoFiles/BCeltics.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+      } // end function registerListeners
+
+      // set up and send the asynchronous request.
+      function getContent( url )
+      {
+         // attempt to create XMLHttpRequest object and make the request
+         try
+         {
+            asyncRequest = new XMLHttpRequest(); // create request object
+
+            // register event handler
+            asyncRequest.addEventListener(
+               "readystatechange", stateChange, false); 
+            asyncRequest.open( "GET", url, true ); // prepare the request
+            asyncRequest.send( null ); // send the request
+         } // end try
+         catch ( exception )
+         {
+            alert( "Request failed." );
+         } // end catch
+      } // end function getContent
+      
+      // displays the response data on the page
+      function stateChange()
+      {
+         if ( asyncRequest.readyState == 4 && asyncRequest.status == 200 )
+         {
+            document.getElementById( "contentArea" ).innerHTML = 
+               asyncRequest.responseText; // places text in contentArea
+         } // end if
+      } // end function stateChange
+
+      // clear the content of the box
+      function clearContent()
+      {
+         document.getElementById( "contentArea" ).innerHTML = "";
+      } // end function clearContent
+
+      window.addEventListener( "load", registerListeners, false );
+   </script>
+</head>
+<body>
+   <!--list 6 sports teams with images-->
+   <h1>Mouse over an image for more information.</h1>
+   <img id = "phoenixS" alt = "Phoenix Suns"
+      src = "./images/PhoenixSuns.jpg">
+   <img id = "newyorkK" alt = "Internet & WWW How to Program book cover"
+      src = "./images/NYKnicks.jpg">
+   <img id = "losangL" alt = "Los Angeles Lakers"
+      src = "./images/LALakers.jpg">
+   <img id = "chicagoB" alt = "Chicago Bulls"
+      src = "./images/ChicagoBulls.jpg">
+   <img id = "brooklynN" alt = "Brooklyn Nets" 
+      src = "./images/BrooklynNets.jpg">
+   <img id = "bostonC" alt = "Boston Celtics"
+      src = "./images/BostonCeltics.jpg">
+   <div class = "box" id = "contentArea"></div>
+</body>
+</html>
+
